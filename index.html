@@ -20,9 +20,9 @@
 <body>
   <div id="menu" class="container my-3">
     <button id="get" class="btn btn-outline-primary">Get</button>
-    <button id="post" class="btn btn-outline-primary">Post</button>
+    <button id="post" class="btn btn-outline-primary">Post(已關閉)</button>
     <button id="patch" class="btn btn-outline-primary">Patch</button>
-    <button id="delete" class="btn btn-outline-primary">Delete</button>
+    <button id="delete" class="btn btn-outline-primary">Delete(已關閉)</button>
   </div>
   <div class="container">
     <h2>產品列表</h2>
@@ -32,9 +32,9 @@
   <script>
 
     document.querySelector('#get').addEventListener('click', getData);
-    document.querySelector('#post').addEventListener('click', postData);
+    // document.querySelector('#post').addEventListener('click', postData);
     document.querySelector('#patch').addEventListener('click', patchData);
-    document.querySelector('#delete').addEventListener('click', deleteData);
+    // document.querySelector('#delete').addEventListener('click', deleteData);
     
 
     var uuid = '1e46f421-bbae-4212-8539-55ea1c5329cf';
@@ -43,7 +43,7 @@
 
     axios.defaults.headers['Authorization'] = `Bearer ${token}`
    
-    // 小心，有錯～，請參考課程影片
+    // DATA
     var sampleData = [
         {
         title: '好茶',
