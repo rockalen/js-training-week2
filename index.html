@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="./script/all.js"></script>
+  <style>
+    body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft JhengHei", Roboto, "Helvetica Neue", Arial, sans-serif;
+    }
+    .completed {
+      text-decoration: line-through
+    }
+  </style>
+</head>
+<body>
+  <div id="menu" class="container my-3">
+    <button id="get" class="btn btn-outline-primary">Get</button>
+    <button id="post" class="btn btn-outline-primary">Post</button>
+    <button id="patch" class="btn btn-outline-primary">Patch</button>
+    <button id="delete" class="btn btn-outline-primary">Delete</button>
+  </div>
+  <div class="container">
+    <h2>產品列表</h2>
+    <div id="app" class="card-columns">
+    </div>
+  </div>
+  <script>
+
+    document.querySelector('#get').addEventListener('click', getData);
+    document.querySelector('#post').addEventListener('click', postData);
+    document.querySelector('#patch').addEventListener('click', patchData);
+    document.querySelector('#delete').addEventListener('click', deleteData);
+    
+
+    var uuid = '1e46f421-bbae-4212-8539-55ea1c5329cf';
+    var token = 'mZVBachVGTFQp9pN6KHRJpzMSalHWDRSMKJImYzifGEtXYyOduTR91wqXgXq';
+    var apiPath = 'https://course-ec-api.hexschool.io/';
+
+    axios.defaults.headers['Authorization'] = `Bearer ${token}`
+   
+    // 小心，有錯～，請參考課程影片
+    var sampleData = [
+        {
+        title: '好茶',
+        category: 'tea',
+        content: '內容',
+        imageUrl: [
+            'https://images.unsplash.com/photo-1587918515749-a2a68b40a124?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60'
+        ],
+        description: '這是錯誤後加上去的描述資料',
+        enabled: true,
+        origin_price: 100,
+        price: 90,
+        unit: '杯',
+        },
+        {
+        title: '這是我要新增的資料2',
+        category: '星星',
+        content: '內容',
+        imageUrl: [
+            'https://i2.kknews.cc/SIG=u4k7bq/ctp-vzntr/154056394339082o7q01429.jpg'
+        ],
+        description: '這是資料2的描述資料',
+        enabled: true,
+        origin_price: 100,
+        price: 90,
+        unit: '顆',
+        },
+        {
+        title: 'Couple Collection',
+        category: '手做陶器',
+        content: '手做、柴燒',
+        imageUrl: [
+            'https://rockalen.github.io/sixw6hwdist/assets/images/img-2.jpg'
+        ],
+        description: '20*20,50*48',
+        enabled: true,
+        origin_price: 2800,
+        price: 2800,
+        unit: '組',
+        options: {
+          imgStyle: 'card-img',          
+          onSale: false,
+          order: 9,
+          }
+        }
+    ]
+    
+    var updateData = [
+      { 
+        id : 'TyqHKquoBAQtTW1hfBGjbeM0Eawi5BeReiPmcqBI6FSRBQNxrh83XHufPRiZq4ly',      
+        title: 'Tatami Cup',
+        category: '手做陶器',
+        content: '手做、材燒',
+        imageUrl: [
+            'https://rockalen.github.io/sixw6hwdist/assets/images/img-1.jpg'
+        ],
+        origin_price: 1200,
+        price: 1080, 
+        options: {
+          imgStyle: 'card-img',          
+          onSale: true,
+          order: 1,
+        }
+      },
+      {
+        id : 'fs4Di463PNEF8Qaxwp92NXs4pHq3gTLHcaAAZ4My2hOHUAlh675L7lv2SbnCCEoX',      
+        title: 'Limdae Cup',
+        category: '手做陶器',
+        content: '材燒',
+        imageUrl: [
+            'https://rockalen.github.io/sixw6hwdist/assets/images/img-6.jpg'
+        ], 
+        origin_price: 2800,
+        price: 2800,
+        options: {
+          imgStyle: 'card-img-sm',          
+          onSale: false,
+          order: 2,
+        },
+      },
+      {
+        id : '42JfF63O8A93PfGXud6wBvEWuPCdvGAACbhogg1ICZdtVnh4YpGX3lqCccV2n9X4',      
+        title: 'Kabi Mug',
+        category: '手做陶器',
+        content: '材燒、杯蓋、陶杯組',
+        imageUrl: [
+            'https://rockalen.github.io/sixw6hwdist/assets/images/img-8.jpg'
+        ], 
+        origin_price: 2800,
+        price: 2800,
+        options: {
+          imgStyle: 'card-img-lg',          
+          onSale: false,
+          order: 3,
+        },        
+      },
+      {
+        id : '3p593kkxvigHziuTvVwM2HcmDKNBkf1Lsdb4gt90t9encVYbPTSXS5a4iIZifLNT',      
+        title: 'Hana Vase',
+        category: '手做陶器',
+        content: '柴燒、花瓶組',
+        imageUrl: [
+            'https://rockalen.github.io/sixw6hwdist/assets/images/img-5.jpg'
+        ], 
+        origin_price: 3800,
+        price: 3600,
+        options: {
+          imgStyle: 'card-img-lg',          
+          onSale: true,
+          order: 4,
+        },        
+      },
+      {
+        id : 'yHFyfe7acgJa4zZ6QaVb7dnzmy0LWGNg7AXBPMKPvbesuvBzCV0WS7kw08ZvQWhJ',      
+        
+        options: {
+          imgStyle: 'card-img',          
+          onSale: true,
+          order: 5,
+        },        
+      }
+    ]
+
+    var deleteData = {
+        id: 'r0IoD1Ibh2O1uM81JdTTeN0DLrgjDS09wFnzuluUbBJcqPnom2UJKHMDSZHtdE7i',
+    }
+    // axios.defaults.headers['Authorization']
+    // axios 設定說明：https://github.com/axios/axios#config-defaults
+
+    function getData() {
+      console.log('getData');
+      var api = `${apiPath}api/${uuid}/admin/ec/products`;
+      console.log(api);
+      axios.get(api)
+        .then(function(res){
+            console.log(res);
+        })
+    }
+
+    function postData() {
+      console.log('postData');
+      var api = `${apiPath}api/${uuid}/admin/ec/product`;
+      axios.post(api,sampleData[2])
+        .then(function(res) {
+            console.log(res);
+        })      
+    }
+
+    function patchData() {
+      console.log('patchData');
+    //   var id = 'TyqHKquoBAQtTW1hfBGjbeM0Eawi5BeReiPmcqBI6FSRBQNxrh83XHufPRiZq4ly';
+      var id = updateData[4].id;
+      var api = `${apiPath}api/${uuid}/admin/ec/product/${id}`;
+      axios.patch(api,updateData[4])
+        .then(function(res) {
+            console.log(res);
+        })
+    }
+    
+    function deleteData() {
+      console.log('deleteData');
+      var id = deleteData.id;
+      var api = `${apiPath}api/${uuid}/admin/ec/product/${id}`;
+      axios.delete(api)
+        .then(function(res){
+            console.log(res);
+        })
+    }
+
+  </script>
+</body>
+</html>
